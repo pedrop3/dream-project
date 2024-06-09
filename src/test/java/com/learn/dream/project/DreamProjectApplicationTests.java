@@ -1,4 +1,4 @@
-package com.learn.dream_project;
+package com.learn.dream.project;
 
 
 class DreamProjectApplicationTests {
