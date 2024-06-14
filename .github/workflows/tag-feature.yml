@@ -1,0 +1,35 @@
+name: Tag Maven Project
+
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Get the version from pom.xml
+        id: vars
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "::set-output name=VERSION::$VERSION"
+
+      - name: Create Tag
+        run: |
+          git tag -a "v${{ steps.vars.outputs.VERSION }}" -m "Tagging version ${{ steps.vars.outputs.VERSION }}"
+          git push origin "v${{ steps.vars.outputs.VERSION }}"
