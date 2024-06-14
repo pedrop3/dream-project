@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+
 jobs:
   tag:
     runs-on: ubuntu-latest
@@ -30,6 +31,8 @@ jobs:
           echo "::set-output name=VERSION::$VERSION"
 
       - name: Create Tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git tag -a "v${{ steps.vars.outputs.VERSION }}" -m "Tagging version ${{ steps.vars.outputs.VERSION }}"
-          git push origin "v${{ steps.vars.outputs.VERSION }}"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} v${{ steps.vars.outputs.VERSION }}
