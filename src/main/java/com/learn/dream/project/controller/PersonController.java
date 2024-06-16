@@ -4,6 +4,7 @@ import com.learn.dream.project.dto.PersonDTO;
 import com.learn.dream.project.model.Person;
 import com.learn.dream.project.service.PersonService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,10 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/persons")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class PersonController {
 
-    private final ModelMapper modelMapper ;
+    private final ModelMapper modelMapper;
     private final PersonService personService;
 
     @PostMapping
