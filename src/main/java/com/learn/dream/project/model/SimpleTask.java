@@ -1,9 +1,5 @@
 package com.learn.dream.project.model;
 
-import java.io.Serializable;
-
-import org.hibernate.mapping.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.io.Serializable;
 
 
 @Entity
