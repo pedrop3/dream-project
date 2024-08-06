@@ -1,14 +1,12 @@
 package com.learn.dream.project.service.impl;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import com.learn.dream.project.model.Person;
 import com.learn.dream.project.respository.PersonRepository;
 import com.learn.dream.project.service.PersonService;
-
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -18,6 +16,11 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person save(Person person) {
+
+        if (person.getName() == null || person.getName().isEmpty()) {
+            throw new IllegalArgumentException("Nome é obrigatório");
+        }
+
         return personRepository.save(person);
     }
 
