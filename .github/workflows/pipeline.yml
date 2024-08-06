@@ -97,17 +97,3 @@ jobs:
     steps:
       - name: Request approval for production deployment
         uses: actions/github-script@v5
-        with:
-          script: |
-            const { Octokit } = require("@octokit/core");
-            const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
-            const { context } = require("@actions/github");
-            
-            const issue = await octokit.request('POST /repos/{owner}/{repo}/issues', {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: 'Approve deployment to production',
-              body: 'Deployment to staging was successful. Approve to deploy to production.',
-            });
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
