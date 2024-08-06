@@ -26,12 +26,6 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven
 
-      - name: Build with Maven
-        run: mvn clean package
-
-      - name: Run unit tests
-        run: mvn test
-
       - name: Get the version from pom.xml
         id: vars
         run: |
@@ -44,6 +38,12 @@ jobs:
         run: |
           git tag -a "v${{ steps.vars.outputs.VERSION }}" -m "Tagging version ${{ steps.vars.outputs.VERSION }}"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} v${{ steps.vars.outputs.VERSION }}
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Run unit tests
+        run: mvn test
 
 
       - name: Build Docker image
