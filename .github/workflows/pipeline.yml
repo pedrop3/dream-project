@@ -64,7 +64,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/dream-project:${{ steps.vars.outputs.VERSION }}
+          tags: ${{ secrets.DOCKER_REPO }}/dream-project:${{ steps.vars.outputs.VERSION }}
 
   deploy-staging:
     runs-on: ubuntu-latest
