@@ -84,7 +84,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy-staging
     environment: prod
-    if: github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Deploy to Production
