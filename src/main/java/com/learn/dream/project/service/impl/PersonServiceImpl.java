@@ -17,7 +17,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Person save(Person person) {
 
-        if (person.getName() == null || person.getName().isEmpty()) {
+        if (person.getName() == "null" || person.getName().isEmpty()) {
             throw new IllegalArgumentException("Nome é obrigatório");
         }
 
