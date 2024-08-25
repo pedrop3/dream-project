@@ -25,6 +25,13 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven
+
+      - name: Run unit tests
+        run: mvn test
+
+      - name: Build with Maven
+        run: mvn clean package
+
       - name: Set up Git
         run: |
           git config --global user.name 'github-actions'
@@ -36,19 +43,6 @@ jobs:
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "::set-output name=VERSION::$VERSION"
 
-      - name: Create Tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git tag -a "v${{ steps.vars.outputs.VERSION }}" -m "Tagging version ${{ steps.vars.outputs.VERSION }}"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} v${{ steps.vars.outputs.VERSION }}
-
-      - name: Run unit tests
-        run: mvn test
-
-      - name: Build with Maven
-        run: mvn clean package
-
       - name: Build Docker image
         run: docker build -t dream-project:${{ steps.vars.outputs.VERSION }} .
 
@@ -58,12 +52,27 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
           push: true
           tags: ${{ secrets.DOCKER_REPO }}/dream-project:${{ steps.vars.outputs.VERSION }}
+
+      - name: Create Tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git tag -a "v${{ steps.vars.outputs.VERSION }}" -m "Tagging version ${{ steps.vars.outputs.VERSION }}"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} v${{ steps.vars.outputs.VERSION }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "v${{ steps.vars.outputs.VERSION }}"
+          name: "v${{ steps.vars.outputs.VERSION }}"
+          body: "Release of version v${{ steps.vars.outputs.VERSION }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-staging:
     runs-on: ubuntu-latest
