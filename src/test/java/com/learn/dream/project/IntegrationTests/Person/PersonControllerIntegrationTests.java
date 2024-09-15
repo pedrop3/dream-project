@@ -3,7 +3,7 @@ package com.learn.dream.project.IntegrationTests.Person;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.learn.dream.project.controller.PersonController;
-import com.learn.dream.project.dto.PersonDTO;
+import com.learn.dream.project.dto.PersonCreateDTO;
 import com.learn.dream.project.model.Person;
 import com.learn.dream.project.service.PersonService;
 import org.junit.Test;
@@ -56,7 +56,7 @@ public class PersonControllerIntegrationTests {
 
     @Test
     public void shouldReturnBadRequestForInvalidData() throws JsonProcessingException, Exception {
-        PersonDTO personDTO = new PersonDTO(null, null);
+        PersonCreateDTO personDTO = new PersonCreateDTO(null, null);
 
         mockMvc.perform(
                         post(BASE_URL)
@@ -89,8 +89,8 @@ public class PersonControllerIntegrationTests {
 
     }
 
-    private PersonDTO buildPersonDTO() {
-        return new PersonDTO(null,"Pedro Santos");
+    private PersonCreateDTO buildPersonDTO() {
+        return new PersonCreateDTO(null,"Pedro Santos");
     }
 
 }
