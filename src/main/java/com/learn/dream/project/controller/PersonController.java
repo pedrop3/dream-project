@@ -25,10 +25,10 @@ public class PersonController {
     @PostMapping
     public ResponseEntity<PersonDTO> save(@RequestBody @Valid PersonDTO personDTO) {
         try {
-            Person person = Person.builder().name(personDTO.getName()).build();
+            Person person = Person.builder().name(personDTO.name()).build();
             Person savedPerson = personService.save(person);
 
-            var responseDTO = PersonDTO.builder().id(savedPerson.getId()).name(savedPerson.getName()).build();
+            var responseDTO = new PersonDTO(savedPerson.getId(), savedPerson.getName());
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
